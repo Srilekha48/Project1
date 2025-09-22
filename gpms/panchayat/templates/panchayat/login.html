@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Gram Panchayat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+            position: relative;
+        }
+        .home-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            text-decoration: none;
+            background: #00509d;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .container {
+            width: 400px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        h2 {
+            color: #00509d;
+            margin-bottom: 20px;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #e63946;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+        }
+        .register-link {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .register-link a {
+            color: #e63946;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Home button at the right-most corner -->
+<a href="{% url 'home' %}" class="home-btn">Home</a>
+
+<div class="container">
+    <h2>Login</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p class="error">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <select name="role" required>
+            <option value="">Select Role</option>
+            <option value="System Admin">System Admin</option>
+            <option value="Government Monitor">Government Monitor</option>
+            <option value="Panchayat Employee">Panchayat Employee</option>
+            <option value="Citizen">Citizen</option>
+        </select>
+        <button type="submit" class="btn">Login 🔐</button>
+        <p class="register-link">Don't have an account? <a href="{% url 'register' %}">Register</a></p>
+    </form>
+</div>
+
+</body>
+</html>

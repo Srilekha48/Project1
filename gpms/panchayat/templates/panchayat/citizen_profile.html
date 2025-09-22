@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citizen Profile</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            color: #00509d;
+        }
+        p {
+            margin: 10px 0;
+        }
+        .dashboard-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #00509d;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Citizen Profile</h2>
+    {% if profile %}
+        <p><strong>Citizen ID:</strong> {{ profile.citizen_id }}</p>
+        <p><strong>Name:</strong> {{ profile.name }}</p>
+        <p><strong>Username:</strong> {{ profile.username }}</p>
+        <p><strong>Gender:</strong> {{ profile.gender }}</p>
+        <p><strong>Date of Birth:</strong> {{ profile.dob }}</p>
+        <p><strong>Contact Number:</strong> {{ profile.contact_number }}</p>
+        <p><strong>Educational Qualification:</strong> {{ profile.educational_qualification }}</p>
+        <p><strong>Household ID:</strong> {{ profile.household_id }}</p>
+        <p><strong>Income:</strong> {{ profile.income }}</p>
+        <p><strong>Address:</strong> {{ profile.address }}</p>
+    {% else %}
+        <p>Profile information not available.</p>
+    {% endif %}
+    <a href="{% url 'citizen_dashboard' %}" class="dashboard-link">Back to Dashboard</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Taxes</title>
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #a1c4fd, #c2e9fb); padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2 { color: #00509d; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #00509d; color: white; }
+        input[type="text"], input[type="number"] { width: 100%; padding: 8px; margin: 5px 0; }
+        button { padding: 8px 15px; background: #00509d; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .error { color: red; }
+        .success { color: green; }
+        .dashboard-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #00509d;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Manage Taxes</h2>
+    {% if messages %}
+        {% for message in messages %}
+            <p class="{% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>Tax ID</th>
+                <th>Citizen ID</th>
+                <th>Tax Type</th>
+                <th>Tax Amount</th>
+                <th>Collection Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tax in taxes %}
+                <tr>
+                    <td>{{ tax.tax_id }}</td>
+                    <td>
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="edit">
+                            <input type="hidden" name="tax_id" value="{{ tax.tax_id }}">
+                            <input type="number" name="citizen_id" value="{{ tax.citizen_id }}" required>
+                    </td>
+                    <td><input type="text" name="tax_type" value="{{ tax.tax_type }}" required></td>
+                    <td><input type="number" name="tax_amount" value="{{ tax.tax_amount }}" step="0.01" required></td>
+                    <td><input type="date" name="collection_date" value="{{ tax.collection_date|date:'Y-m-d' }}" required></td>
+
+                    <td>
+                            <button type="submit" class="edit-btn">Save</button>
+                        </form>
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="tax_id" value="{{ tax.tax_id }}">
+                            <button type="submit" class="delete-btn">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Add New Tax Record</h3>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add">
+        <input type="number" name="citizen_id" placeholder="Citizen ID" required><br>
+        <input type="text" name="tax_type" placeholder="Tax Type" required><br>
+        <input type="number" name="tax_amount" placeholder="Amount" step="0.01" required><br>
+        <input type="date" name="collection_date" required><br>
+        <button type="submit">Add Tax</button>
+    </form>
+
+    <a href="{% url 'admin_dashboard' %}" class="dashboard-link">Back to Dashboard</a>
+</div>
+
+</body>
+</html>

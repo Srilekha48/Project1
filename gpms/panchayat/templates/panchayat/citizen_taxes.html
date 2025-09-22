@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Taxes</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            color: #00509d;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #00509d;
+            color: white;
+        }
+        .dashboard-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #00509d;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+    <!-- Same CSS as land_records.html -->
+     
+</head>
+<body>
+<div class="container">
+    <h2>Manage Taxes</h2>
+    {% if messages %}{% for message in messages %}<p class="{% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</p>{% endfor %}{% endif %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>Tax ID</th>
+                <th>Citizen ID</th>
+                <th>Tax Type</th>
+                <th>Amount</th>
+                <th>Collection Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tax in taxes %}
+                <tr>
+                    <td>{{ tax.tax_id }}</td>
+                    <td>{{ tax.citizen_id }}</td>
+                    <td>{{ tax.tax_type }}</td>
+                    <td>{{ tax.tax_amount }}</td>
+                    <td>{{ tax.collection_date }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'citizen_dashboard' %}" class="dashboard-link">Back to Dashboard</a>
+</div>
+</body>
+</html>

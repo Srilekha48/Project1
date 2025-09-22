@@ -1,0 +1,155 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Welfare Schemes</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            color: #00509d;
+        }
+        form {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        button {
+            padding: 10px;
+            background: #00509d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #003f7f;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background: #00509d;
+            color: white;
+        }
+        .delete-btn {
+            background: #e63946;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .delete-btn:hover {
+            background: #c72c3c;
+        }
+        .dashboard-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #00509d;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Manage Welfare Schemes</h2>
+
+    <!-- ✅ Form to Add/Edit Scheme -->
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="scheme_id" id="scheme_id">  <!-- For editing -->
+
+        <label for="scheme_name">Scheme Name:</label>
+        <input type="text" id="scheme_name" name="scheme_name" required>
+
+        <label for="beneficiaries">Beneficiaries:</label>
+        <textarea id="beneficiaries" name="beneficiaries" required></textarea>
+
+        <label for="budget">Budget (₹):</label>
+        <input type="number" id="budget" name="budget" step="0.01" required>
+
+        <button type="submit">Save Scheme</button>
+    </form>
+
+    <!-- ✅ Display Schemes in a Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Scheme ID</th>  <!-- Added Scheme ID Column -->
+                <th>Scheme Name</th>
+                <th>Beneficiaries</th>
+                <th>Budget (₹)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for scheme in schemes %}
+            <tr>
+                <td>{{ scheme.scheme_id }}</td> <!-- ✅ Print Scheme ID -->
+                <td>{{ scheme.scheme_name }}</td>
+                <td>{{ scheme.beneficiaries }}</td>
+                <td>₹{{ scheme.budget }}</td>
+                <td>
+                    <!-- Edit -->
+                    <button onclick="editScheme('{{ scheme.scheme_id }}', '{{ scheme.scheme_name }}', '{{ scheme.beneficiaries }}', '{{ scheme.budget }}')">Edit</button>
+
+                    <!-- Delete -->
+                    <form method="post" action="{% url 'delete_welfare_scheme' scheme.scheme_id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-btn">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No schemes available.</td>  <!-- Updated colspan to 5 -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function editScheme(id, name, beneficiaries, budget) {
+        document.getElementById('scheme_id').value = id;
+        document.getElementById('scheme_name').value = name;
+        document.getElementById('beneficiaries').value = beneficiaries;
+        document.getElementById('budget').value = budget;
+    }
+</script>
+
+<a href="{% url 'admin_dashboard' %}" class="dashboard-link">Back to Dashboard</a>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head> <!-- Same styling as dashboard --> 
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #f4f4f4;background: linear-gradient(135deg, #a1c4fd, #c2e9fb); padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2 { color: #00509d; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #00509d; color: white; }
+        input[type="text"], input[type="number"] { width: 100%; padding: 8px; margin: 5px 0; }
+        button { padding: 8px 15px; background: #00509d; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .error { color: red; }
+        .success { color: green; }
+        .dashboard-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #00509d;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Household Statistics</h2>
+
+    <!-- Income Distribution -->
+    {% if income_distribution %}
+    <div class="chart-box">
+        <h3>Income Distribution by Range (₹)</h3>
+        <table>
+            <thead><tr><th>Income Range (₹)</th><th>Count of Households</th></tr></thead>
+            <tbody>
+                {% for range, count in income_distribution.items %}
+                <tr><td>{{ range }}</td><td>{{ count }}</td></tr>
+                {% endfor %}
+                <tr style="font-weight:bold;"><td>Total Households:</td><td>{{ total_households }}</td></tr> <!-- Total passed from view -->
+            </tbody>
+        </table>
+    </div>
+
+    {% endif %}
+    
+    <!-- Back Button -->
+    <a href="{% url 'monitor_dashboard' %}" class="dashboard-link">Back to Dashboard</a>
+
+</div>
+
+</body></html> 

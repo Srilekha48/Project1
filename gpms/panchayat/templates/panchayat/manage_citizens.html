@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Citizens</title>
+        <style>
+           body { font-family: 'Poppins', sans-serif;  background: linear-gradient(135deg, #a1c4fd, #c2e9fb); padding: 20px; }
+        .container { max-width: 1200px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2 { color: #00509d; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #00509d; color: white; }
+        input[type="text"], input[type="number"] { width: 100%; padding: 8px; margin: 5px 0; }
+        button { padding: 8px 15px; background: #00509d; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .error { color: red; }
+        .success { color: green; }
+        .dashboard-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #00509d;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Manage Citizens</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p class="{% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>Citizen ID</th>
+                <th>Username</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>DOB</th>
+                <th>Household ID</th>
+                <th>Contact Number</th>
+                <th>Educational Qualification</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for citizen in citizens %}
+                <tr>
+                    <td>{{ citizen.citizen_id }}</td>
+                    <td>{{ citizen.username }}</td>
+                    <td>{{ citizen.name }}</td>
+                    <td>{{ citizen.gender }}</td>
+                    <td>{{ citizen.dob }}</td>
+                    <td>{{ citizen.household_id }}</td>
+                    <td>{{ citizen.contact_number }}</td>
+                    <td>{{ citizen.educational_qualification }}</td>
+                    <td>{{ citizen.role }}</td>
+                    <td>
+                        <form method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="edit">
+                            <input type="hidden" name="citizen_id" value="{{ citizen.citizen_id }}">
+                            <input type="text" name="username" value="{{ citizen.username }}" required><br>
+                            <input type="password" name="password" value="{{ citizen.password }}" required><br>
+                            <input type="text" name="name" value="{{ citizen.name }}" required><br>
+                            <input type="text" name="gender" value="{{ citizen.gender }}"><br>
+                            <input type="date" name="dob" value="{{ citizen.dob|date:'Y-m-d' }}"><br>
+
+                            <input type="number" name="household_id" value="{{ citizen.household_id }}"><br>
+                            <input type="text" name="contact_number" value="{{ citizen.contact_number }}"><br>
+                            <input type="text" name="educational_qualification" value="{{ citizen.educational_qualification }}"><br>
+                            <input type="text" name="role" value="{{ citizen.role }}"><br>
+                            <button type="submit">Edit</button>
+                        </form>
+                        <form method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="citizen_id" value="{{ citizen.citizen_id }}">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Add New Citizen</h3>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add">
+        <input type="text" name="username" placeholder="Username" required><br>
+        <input type="password" name="password" placeholder="Password" required><br>
+        <input type="text" name="name" placeholder="Name" required><br>
+        <input type="text" name="gender" placeholder="Gender"><br>
+        <input type="date" name="dob" placeholder="Date of Birth"><br>
+        <input type="number" name="household_id" placeholder="Household ID"><br>
+        <input type="text" name="contact_number" placeholder="Contact Number"><br>
+        <input type="text" name="educational_qualification" placeholder="Educational Qualification"><br>
+        <input type="text" name="role" placeholder="Role"><br>
+        <button type="submit">Add Citizen</button>
+    </form>
+
+    <a href="{% url 'admin_dashboard' %}" class="dashboard-link">Back to Dashboard</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Households</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            color: #00509d;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #00509d;
+            color: white;
+        }
+        .dashboard-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #00509d;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Manage Households</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p class="{% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>Household ID</th>
+                <th>Address</th>
+                <th>Income</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for household in households %}
+                <tr>
+                    <td>{{ household.household_id }}</td>
+                    <td>{{ household.address }}</td>
+                    <td>{{ household.income }}</td>
+                    <td>
+                        <form method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="edit">
+                            <input type="hidden" name="household_id" value="{{ household.household_id }}">
+                            <input type="text" name="address" value="{{ household.address }}" required>
+                            <input type="number" name="income" value="{{ household.income }}" required>
+                            <button type="submit">Edit</button>
+                        </form>
+                        <form method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="household_id" value="{{ household.household_id }}">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Add New Household</h3>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add">
+        <input type="text" name="address" placeholder="Address" required><br>
+        <input type="number" name="income" placeholder="Income" required><br>
+        <button type="submit">Add Household</button>
+    </form>
+
+    <a href="{% url 'employee_dashboard' %}" class="dashboard-link">Back to Dashboard</a>
+</div>
+
+</body>
+</html>

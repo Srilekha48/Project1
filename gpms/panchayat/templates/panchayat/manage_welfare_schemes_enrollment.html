@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Schemes Enrollment</title>
+    <!-- Same CSS as land_records.html -->
+    <style>
+        body { font-family: 'Poppins', sans-serif;  background: linear-gradient(135deg, #a1c4fd, #c2e9fb); padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2 { color: #00509d; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #00509d; color: white; }
+        input[type="text"], input[type="number"] { width: 100%; padding: 8px; margin: 5px 0; }
+        button { padding: 8px 15px; background: #00509d; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .error { color: red; }
+        .success { color: green; }
+        .dashboard-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #00509d;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Manage Schemes Enrollment</h2>
+    {% if messages %}{% for message in messages %}<p class="{% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</p>{% endfor %}{% endif %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>Enrollment ID</th>
+                <th>Citizen ID</th>
+                <th>Scheme ID</th>
+                <th>Enrollment Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for enrollment in enrollments %}
+                <tr>
+                    <td>{{ enrollment.enrollment_id }}</td>
+                    <td>
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="edit">
+                            <input type="hidden" name="enrollment_id" value="{{ enrollment.enrollment_id }}">
+                            <input type="number" name="citizen_id" value="{{ enrollment.citizen_id }}" required>
+                    </td>
+                    <td><input type="number" name="scheme_id" value="{{ enrollment.scheme_id }}" required></td>
+                    <td><input type="date" name="enrollment_date" value="{{ enrollment.enrollment_date|date:'Y-m-d' }}" required></td>
+
+                    <td>
+                            <button type="submit">Save</button>
+                        </form>
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="enrollment_id" value="{{ enrollment.enrollment_id }}">
+                            <button type="submit" style="background: #e63946;">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Add New Enrollment</h3>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add">
+        <input type="number" name="citizen_id" placeholder="Citizen ID" required><br>
+        <input type="number" name="scheme_id" placeholder="Scheme ID" required><br>
+        <input type="date" name="enrollment_date" required><br>
+        <button type="submit">Add Enrollment</button>
+    </form>
+
+    <a href="{% url 'admin_dashboard' %}" class="dashboard-link">Back to Dashboard</a>
+</div>
+</body>
+</html>

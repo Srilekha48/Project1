@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Government Monitors</title>
+    <style>
+        body { font-family: 'Poppins', sans-serif;  background: linear-gradient(135deg, #a1c4fd, #c2e9fb); padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2 { color: #00509d; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #00509d; color: white; }
+        input[type="text"], input[type="number"] { width: 100%; padding: 8px; margin: 5px 0; }
+        button { padding: 8px 15px; background: #00509d; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .error { color: red; }
+        .success { color: green; }
+        .dashboard-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #00509d;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Manage Government Monitors</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p class="{% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Table for displaying government monitors -->
+    <table>
+        <thead>
+            <tr>
+                <th>Monitor ID</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Date of Birth</th>
+                <th>Contact Number</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for monitor in government_monitors %}
+            <tr>
+                <!-- Display Monitor Details -->
+                <td>{{ monitor.monitor_id }}</td>
+                <td>
+                    <!-- Inline Edit Form -->
+                    <form method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="edit">
+                        <input type="hidden" name="monitor_id" value="{{ monitor.monitor_id }}">
+                        <input type="text" name="name" value="{{ monitor.name }}" required>
+                </td>
+                <td><input type="text" name="gender" value="{{ monitor.gender }}" required></td>
+                <td><input type="date" name="dob" value="{{ monitor.dob|date:'Y-m-d' }}" required></td>
+
+                <td><input type="text" name="contact_number" value="{{ monitor.contact_number }}" maxlength="10" required></td>
+                <td>
+                        <!-- Save Button -->
+                        <button type="submit">Save</button>
+                    </form>
+
+                    <!-- Delete Form -->
+                    <form method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="delete">
+                        <input type="hidden" name="monitor_id" value="{{ monitor.monitor_id }}">
+                        <!-- Delete Button -->
+                        <button type="submit" style="background-color:#e63946;">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Add New Government Monitor -->
+    <h3>Add New Government Monitor</h3>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add">
+        <input type="text" name="name" placeholder="Full Name" required><br>
+        <input type="text" name="gender" placeholder="Gender (Male/Female/Other)" required><br>
+        <input type="date" name="dob" placeholder="Date of Birth (YYYY-MM-DD)" required><br>
+        <input type="text" name="contact_number" placeholder="+91XXXXXXXXXX (10 digits)" maxlength=10 required><br>
+        <!-- Add Button -->
+        <button type="submit">Add Monitor</button>
+    </form>
+
+    <!-- Back Button -->
+    <a href="{% url 'admin_dashboard' %}" class="dashboard-link">Back to Dashboard</a>
+
+</div>
+
+</body>
+</html>

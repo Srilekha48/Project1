@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citizen Vaccinations</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            color: #00509d;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #00509d;
+            color: white;
+        }
+        .dashboard-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #00509d;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Vaccination Records</h2>
+    {% if vaccinations %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Vaccine Type</th>
+                    <th>Date Administered</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for vaccination in vaccinations %}
+                    <tr>
+                        <td>{{ vaccination.vaccine_type }}</td>
+                        <td>{{ vaccination.date_administered }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No vaccination records found.</p>
+    {% endif %}
+    <a href="{% url 'citizen_dashboard' %}" class="dashboard-link">Back to Dashboard</a>
+</div>
+
+</body>
+</html>

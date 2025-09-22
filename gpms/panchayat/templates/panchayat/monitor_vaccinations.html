@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head> <!-- Same styling as citizens --> 
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #f4f4f4;background: linear-gradient(135deg, #a1c4fd, #c2e9fb); padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2 { color: #00509d; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #00509d; color: white; }
+        input[type="text"], input[type="number"] { width: 100%; padding: 8px; margin: 5px 0; }
+        button { padding: 8px 15px; background: #00509d; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .error { color: red; }
+        .success { color: green; }
+        .dashboard-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #00509d;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Vaccinations Statistics</h2>
+
+    <!-- Vaccinations by Vaccine Type -->
+    <div class="chart-box">
+        <h3>Total Vaccinations Administered by Vaccine Type:</h3>
+        <table>
+            <thead><tr><th>Vaccine Type</th><th>Total Administered Count:</th></tr></thead>
+            <tbody>
+                {% for vaccine in vaccinations_distribution %}
+                <tr><td>{{ vaccine.vaccine_type }}</td><td>{{ vaccine.total_count }}</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Back Button -->
+    <a href="{% url 'monitor_dashboard' %}" class="dashboard-link">Back to Dashboard</a>
+
+</div>
+
+</body></html> 

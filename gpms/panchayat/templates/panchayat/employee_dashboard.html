@@ -1,0 +1,82 @@
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            text-align: center;
+        }
+        h2 {
+            color: #00509d;
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background: #00509d;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background: #003f7f;
+        }
+        .logout-btn {
+            background: #e63946;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: auto;
+            padding: 8px 15px;
+            font-size: 16px;
+        }
+        .logout-btn:hover {
+            background: #c72c3c;
+        }
+    </style>
+</head>
+<body>
+    <a href="{% url 'logout' %}" class="btn logout-btn">Logout</a>
+
+<div class="container">
+    <h2>Welcome, Employee</h2>
+    <a href="{% url 'households' %}" class="btn">Manage Households</a>
+    <a href="{% url 'citizens' %}" class="btn">Manage Citizens</a>
+    <a href="{% url 'land_records' %}" class="btn">Manage Land Records</a>
+    <a href="{% url 'welfare_schemes_enrollment' %}" class="btn">Manage Welfare Schemes Enrollment</a>
+    <a href="{% url 'taxes' %}" class="btn">Manage Taxes</a>
+    <a href="{% url 'assets' %}" class="btn">Manage Assets</a>
+    <a href="{% url 'expenditures' %}" class="btn">Manage Expenditures</a>
+    <a href="{% url 'vaccinations' %}" class="btn">Manage Vaccinations</a>
+    <a href="{% url 'census_data' %}" class="btn">Manage Census Data</a>
+    
+</div>
+
+</body>
+</html>
