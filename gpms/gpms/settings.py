@@ -77,9 +77,9 @@ WSGI_APPLICATION = 'gpms.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '22CS30023',   # Your database name
-        'USER': '22CS30023',    # Your PostgreSQL username
-        'PASSWORD': '22CS30023',  # Replace with your actual password
+        'NAME': '22NA10024',   # Your database name
+        'USER': '22NA10024',    # Your PostgreSQL username
+        'PASSWORD': '22NA10024',  # Replace with your actual password
         'HOST': '10.5.18.72',   # Your PostgreSQL server's IP address
         'PORT': '5432',         # Default PostgreSQL port
     }
